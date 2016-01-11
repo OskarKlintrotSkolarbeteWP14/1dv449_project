@@ -3,8 +3,8 @@ import { ActionTypesApp } from '../../actions/actionTypes'
 
 const {
   RESET,
-  SET_USER,
-  // Write down the actions you want to use here
+  SET_CITY,
+  SET_CITIES,
 } = ActionTypesApp
 
 const AppReducer = (state, action) => {
@@ -12,10 +12,16 @@ const AppReducer = (state, action) => {
     case RESET:
       return InitialState().app
       break
-    case SET_USER:
+    case SET_CITY:
       return {
         ...state,
-        user: action.user,
+        city: action.city,
+      }
+      break
+    case SET_CITIES:
+      return {
+        ...state,
+        cities: action.cities,
       }
       break
     default:

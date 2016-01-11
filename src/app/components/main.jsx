@@ -3,49 +3,63 @@ import { connect } from 'react-redux'
 import {Link} from 'react-router'
 import Actions from '../redux/actions/'
 
+import Cities from './cities'
+import Forecasts from './forecasts'
+
 class Main extends React.Component {
+  constructor(props) {
+    super(props)
+    const { geoname, name, region, country } = props.params
+    const { setCity } = props
+    if (geoname) {
+      setCity(geoname, name, region, country)
+    }
+  }
+
   render() {
-    const { user, reset, setUser } = this.props
-    const placeholder = "Enter your name here..."
+    const { reset, setCities } = this.props
+    const placeholder = "Ange ort här..."
 
     return (
       <div>
-        <h2>Hello { user }!</h2>
+        <h2>Fråga inte mig, fråga YR!</h2>
         <form>
-          <label htmlFor="userInput">Username: </label>
-          <input id="userInput" type="text" placeholder={ placeholder } ref="inputUser" autofocus autoComplete="off" />
-          <button type="submit" onClick={ () => {
-              setUser(this.refs.inputUser.value)
-              this.refs.inputUser.value = ""
+          <div className="form-group">
+            <label htmlFor="cityInput">Ort</label>
+            <input type="text" className="form-control" id="cityInput" placeholder={ placeholder } ref="inputCity" autofocus autoComplete="off"></input>
+          </div>
+          <button type="submit" className="btn btn-default" onClick={ () => {
+              setCities(this.refs.inputCity.value)
+              this.refs.inputCity.value = ""
             }
-          } >Update user</button>
-          <button type="reset" onClick={ () => {
-              this.refs.inputUser.placeholder = "Notice the delay..."
-              reset()
-            } }>Reset user</button>
+          } >Sök</button>
         </form>
-        <p>
-          <Link to={'/about'}>Read more about this boilerplate...</Link>
-        </p>
+        <Cities />
+        <Forecasts />
+        <footer>
+          Credit to Yr.no
+          {/* TODO: Add a component for credit to YR.no */}
+        </footer>
       </div>
     )
   }
 }
 
 Main.propTypes = {
-  user: PropTypes.string.isRequired,
   reset: PropTypes.func.isRequired,
-  setUser: PropTypes.func.isRequired,
+  setCities: PropTypes.func.isRequired,
+  setCity: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
-  return { user: state.app.user }
+  return { }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     reset: () => { dispatch(Actions.resetApp()) },
-    setUser: (user) => { dispatch(Actions.setUser(user)) },
+    setCities: (city) => { dispatch(Actions.setCities(city)) },
+    setCity: (id, name, region, country) => { dispatch(Actions.setCity(id, name, region, country)) },
   }
 }
 

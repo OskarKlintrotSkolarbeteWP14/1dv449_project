@@ -1,8 +1,13 @@
 const InitialState = () => {
 	return {
-		// Your initial state goes here
 		app: {
-			user: "World",
+			city: null,
+			cities: null,
+			forecasts: null,
+			credit: {
+				text: null,
+				url: null,
+			},
 		},
 		settings: {
 

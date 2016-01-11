@@ -1,9 +1,10 @@
 import ActionTypes from "./actionTypes"
+import WeatherService from "../../internalAPI/weatherService"
 
 const {
 	RESET,
-	SET_USER,
-	// Write down the actions you want to use here
+	SET_CITY,
+	SET_CITIES,
 } = ActionTypes
 
 const AppActions = {
@@ -16,11 +17,28 @@ const AppActions = {
 			}, 1000)
 		}
 	},
-	setUser: (user) => {
+	setCities: (city) => {
+		return (dispatch, getState) => {
+			WeatherService.getCities(city)
+				.then((cities) => {
+						dispatch({
+							type: SET_CITIES,
+							cities: cities,
+						})
+				})
+				.catch((data) => { console.error(data) })
+		}
+	},
+	setCity: (id, name, region, country) => {
 		return (dispatch, getState) => {
 			dispatch({
-				type: SET_USER,
-				user: user,
+				type: SET_CITY,
+				city: {
+					id: id,
+					name: name,
+					region: region,
+					country: country,
+				},
 			})
 		}
 	},

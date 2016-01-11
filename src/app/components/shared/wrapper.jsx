@@ -5,7 +5,7 @@ const Wrapper = (props) => {
 
   return(
         <div>
-          <h1>React, React Router, Redux, Redux Devtools, UpUp and Webpack</h1>
+          <h1>Vad blir det för väder?</h1>
           {children}
         </div>
   )
