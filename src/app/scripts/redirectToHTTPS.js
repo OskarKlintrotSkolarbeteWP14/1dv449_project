@@ -1,4 +1,4 @@
-var host = "oskarklintrotskolarbetewp14.github.io/1dv449_project"
+var host = "weather.oskarklintrot.se"
 
 if ((host == window.location.host) && (window.location.protocol != "https:"))
     window.location.protocol = "https"
