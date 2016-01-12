@@ -3,9 +3,20 @@ import { connect } from 'react-redux'
 import {Link} from 'react-router'
 import Actions from '../redux/actions/'
 
+import ProgressBar from './shared/progressBar'
+
 class Cities extends React.Component {
   render() {
-    const { cities, setCity } = this.props
+    const { cities, setCity, xhrCities } = this.props
+
+    if (xhrCities) {
+      return (
+        <div>
+          <h3>Orter</h3>
+          <ProgressBar description='Söker efter orter...' />
+        </div>
+      )
+    }
 
     if (cities == null) return null
 
@@ -27,11 +38,15 @@ class Cities extends React.Component {
 
 Cities.propTypes = {
   cities: PropTypes.array,
+  xhrCities: PropTypes.bool.isRequired,
   setCity: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
-  return { cities: state.app.cities }
+  return {
+    cities: state.app.cities,
+    xhrCities: state.app.xhrCities,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

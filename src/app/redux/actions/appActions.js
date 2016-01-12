@@ -1,10 +1,13 @@
 import ActionTypes from "./actionTypes"
-import WeatherService from "../../internalAPI/weatherService"
+import WeatherService from "../../weatherService"
 
 const {
 	RESET,
 	SET_CITY,
 	SET_CITIES,
+	SET_XHR_CITIES,
+	SET_FORECASTS,
+	SET_XHR_FORECASTS,
 } = ActionTypes
 
 const AppActions = {
@@ -19,6 +22,9 @@ const AppActions = {
 	},
 	setCities: (city) => {
 		return (dispatch, getState) => {
+			dispatch({
+				type: SET_XHR_CITIES,
+			})
 			WeatherService.getCities(city)
 				.then((cities) => {
 						dispatch({

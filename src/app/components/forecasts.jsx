@@ -5,7 +5,18 @@ import Actions from '../redux/actions/'
 
 class Forecasts extends React.Component {
   render() {
-    const { forecasts, credit, reset } = this.props
+    const { forecasts, xhrForecasts, credit, reset } = this.props
+
+    if (xhrForecasts) {
+      return (
+        <div>
+          <h3>Orter</h3>
+          <ProgressBar description='Hämtar väder...' />
+        </div>
+      )
+    }
+
+    if (forecasts == null) return null
 
     return (
       <div>
@@ -20,12 +31,14 @@ class Forecasts extends React.Component {
 
 Forecasts.propTypes = {
   forecasts: PropTypes.array,
+  xhrForecasts: PropTypes.bool.isRequired,
   credit: PropTypes.object,
 }
 
 const mapStateToProps = (state) => {
   return {
     forecasts: state.app.forecasts,
+    xhrForecasts: state.app.xhrForecasts,
     credit: state.app.credit,
   }
 }

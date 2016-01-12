@@ -23,22 +23,19 @@ class Main extends React.Component {
     return (
       <div>
         <h2>Fråga inte mig, fråga YR!</h2>
-        <form onSubmit={ () => {
-            setCities(this.refs.inputCity.value)
-            this.refs.inputCity.value = ""
-          }>
+        <form>
           <div className="form-group">
             <label htmlFor="cityInput">Ort</label>
             <input type="text" className="form-control" id="cityInput" placeholder={ placeholder } ref="inputCity" autofocus autoComplete="off"></input>
           </div>
-          <button type="submit" className="btn btn-default" >Sök</button>
+          <button type="submit" className="btn btn-default" onClick={ () => {
+              setCities(this.refs.inputCity.value)
+              this.refs.inputCity.value = ""
+            }
+          } >Sök</button>
         </form>
         <Cities />
         <Forecasts />
-        <footer>
-          Credit to Yr.no
-          {/* TODO: Add a component for credit to YR.no */}
-        </footer>
       </div>
     )
   }

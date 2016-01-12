@@ -5,6 +5,9 @@ const {
   RESET,
   SET_CITY,
   SET_CITIES,
+  SET_XHR_CITIES,
+  SET_FORECASTS,
+	SET_XHR_FORECASTS,
 } = ActionTypesApp
 
 const AppReducer = (state, action) => {
@@ -22,6 +25,25 @@ const AppReducer = (state, action) => {
       return {
         ...state,
         cities: action.cities,
+        xhrCities: false,
+      }
+      break
+    case SET_XHR_CITIES:
+      return {
+        ...state,
+        xhrCities: true,
+      }
+    case SET_FORECASTS:
+      return {
+        ...state,
+        forecasts: action.forecasts,
+        xhrForecasts: false,
+      }
+      break
+    case SET_XHR_FORECASTS:
+      return {
+        ...state,
+        xhrForecasts: true,
       }
       break
     default:
