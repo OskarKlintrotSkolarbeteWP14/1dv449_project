@@ -3,7 +3,7 @@ import Ajax from './ajax'
 const WeatherService = {
   getCities: (city) => {
     const promise = new Promise((resolve, reject) => {
-      Ajax.$http("https://api.geonames.org/searchJSON?name=" + city + "&maxRows=50&username=oklib08")
+      Ajax.$http("http://api.geonames.org/searchJSON?name=" + city + "&maxRows=50&username=oklib08")
       .get()
       .then((data) => {
         resolve(
@@ -30,7 +30,7 @@ const WeatherService = {
   },
   getForecasts: (city) => {
     const promise = new Promise((resolve, reject) => {
-      Ajax.$http("https://opendata-download-metfcst.smhi.se/api/category/pmp1.5g/version/1/geopoint/lat/" + city.lat + "/lon/" + city.lng + "/data.json")
+      Ajax.$http("http://opendata-download-metfcst.smhi.se/api/category/pmp1.5g/version/1/geopoint/lat/" + city.lat + "/lon/" + city.lng + "/data.json")
       .get()
       .then((data) => {
         resolve({
