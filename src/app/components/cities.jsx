@@ -7,7 +7,7 @@ import ProgressBar from './shared/progressBar'
 
 class Cities extends React.Component {
   render() {
-    const { cities, setCity, xhrCities } = this.props
+    const { cities, getForecasts, xhrCities } = this.props
 
     if (xhrCities) {
       return (
@@ -16,30 +16,44 @@ class Cities extends React.Component {
           <ProgressBar description='Söker efter orter...' />
         </div>
       )
+    } else if (cities === null) {
+      return null
+    } else if (cities.length === 0) {
+      return (
+        <div>
+          <h3>Orter</h3>
+          <p>Inga orter hittades, försök igen.</p>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <h3>Orter</h3>
+          <ul>
+            { cities.map((city) => <li>
+              <Link to={
+                '/' + city.id + '/' + city.name + '/' + city.region + '/' + city.country + '/' + city.lat + '/' + city.lng
+              }
+              onClick={() => getForecasts({
+                id: city.id,
+                name: city.name,
+                region: city.region,
+                country: city.country,
+                lat: city.lat,
+                lng: city.lng,
+              })}>{ city.name }, { city.region }, { city.country }</Link>
+            </li>) }
+          </ul>
+        </div>
+      )
     }
-
-    if (cities == null) return null
-
-    return (
-      <div>
-        <h3>Orter</h3>
-        <ul>
-          { cities.map((city) => <li>
-            <Link to={
-              '/' + city.id + '/' + city.name + '/' + city.region + '/' + city.country
-            }
-            onClick={() => setCity(city.id, city.name, city.region, city.country)}>{ city.name }, { city.region }, { city.country }</Link>
-          </li>) }
-        </ul>
-      </div>
-    )
   }
 }
 
 Cities.propTypes = {
   cities: PropTypes.array,
   xhrCities: PropTypes.bool.isRequired,
-  setCity: PropTypes.func.isRequired,
+  getForecasts: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -51,7 +65,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCity: (id, name, region, country) => { dispatch(Actions.setCity(id, name, region, country)) },
+    getForecasts: (city) => { dispatch(Actions.getForecasts(city)) },
   }
 }
 

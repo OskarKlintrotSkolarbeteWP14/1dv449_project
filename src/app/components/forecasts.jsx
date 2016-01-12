@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {Link} from 'react-router'
 import Actions from '../redux/actions/'
+import ProgressBar from './shared/progressBar'
 
 class Forecasts extends React.Component {
   render() {
@@ -10,7 +11,7 @@ class Forecasts extends React.Component {
     if (xhrForecasts) {
       return (
         <div>
-          <h3>Orter</h3>
+          <h3>Väder</h3>
           <ProgressBar description='Hämtar väder...' />
         </div>
       )

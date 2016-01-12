@@ -9,15 +9,22 @@ import Forecasts from './forecasts'
 class Main extends React.Component {
   constructor(props) {
     super(props)
-    const { geoname, name, region, country } = props.params
-    const { setCity } = props
-    if (geoname) {
-      setCity(geoname, name, region, country)
+    const { geoId, name, region, country, lat, lng } = props.params
+    const { getForecasts } = props
+    if (geoId) {
+      getForecasts({
+        id: geoId,
+        name: name,
+        region: region,
+        country: country,
+        lat: lat,
+        lng: lng,
+      })
     }
   }
 
   render() {
-    const { reset, setCities } = this.props
+    const { reset, getCities } = this.props
     const placeholder = "Ange ort här..."
 
     return (
@@ -29,7 +36,7 @@ class Main extends React.Component {
             <input type="text" className="form-control" id="cityInput" placeholder={ placeholder } ref="inputCity" autofocus autoComplete="off"></input>
           </div>
           <button type="submit" className="btn btn-default" onClick={ () => {
-              setCities(this.refs.inputCity.value)
+              getCities(this.refs.inputCity.value)
               this.refs.inputCity.value = ""
             }
           } >Sök</button>
@@ -43,8 +50,8 @@ class Main extends React.Component {
 
 Main.propTypes = {
   reset: PropTypes.func.isRequired,
-  setCities: PropTypes.func.isRequired,
-  setCity: PropTypes.func.isRequired,
+  getCities: PropTypes.func.isRequired,
+  getForecasts: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -54,8 +61,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     reset: () => { dispatch(Actions.resetApp()) },
-    setCities: (city) => { dispatch(Actions.setCities(city)) },
-    setCity: (id, name, region, country) => { dispatch(Actions.setCity(id, name, region, country)) },
+    getCities: (city) => { dispatch(Actions.getCities(city)) },
+    getForecasts: (city) => { dispatch(Actions.getForecasts(city)) },
   }
 }
 

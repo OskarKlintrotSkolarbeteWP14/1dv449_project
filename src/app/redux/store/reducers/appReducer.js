@@ -4,9 +4,9 @@ import { ActionTypesApp } from '../../actions/actionTypes'
 const {
   RESET,
   SET_CITY,
-  SET_CITIES,
+  GET_CITIES,
   SET_XHR_CITIES,
-  SET_FORECASTS,
+  GET_FORECASTS,
 	SET_XHR_FORECASTS,
 } = ActionTypesApp
 
@@ -21,7 +21,7 @@ const AppReducer = (state, action) => {
         city: action.city,
       }
       break
-    case SET_CITIES:
+    case GET_CITIES:
       return {
         ...state,
         cities: action.cities,
@@ -33,16 +33,18 @@ const AppReducer = (state, action) => {
         ...state,
         xhrCities: true,
       }
-    case SET_FORECASTS:
+    case GET_FORECASTS:
       return {
         ...state,
         forecasts: action.forecasts,
         xhrForecasts: false,
+        credit: action.credit,
       }
       break
     case SET_XHR_FORECASTS:
       return {
         ...state,
+        city: action.city,
         xhrForecasts: true,
       }
       break

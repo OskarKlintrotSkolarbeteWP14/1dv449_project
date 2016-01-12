@@ -7,12 +7,17 @@ const WeatherService = {
       .get()
       .then((data) => {
         resolve(
-          JSON.parse(data).geonames.map((item) => {
+          JSON.parse(data).geonames
+          .filter((item) => item.fcl === 'P')
+          .filter((item) => item.countryName === 'Sweden' || item.countryName === 'Norway' || item.countryName === 'Denmark' || item.countryName === 'Finland')
+          .map((item) => {
             return {
               id: item.geonameId,
               name: item.name,
               region: item.adminName1,
               country: item.countryName,
+              lat: item.lat,
+              lng: item.lng,
             }
           })
         )
@@ -24,12 +29,19 @@ const WeatherService = {
     return promise
   },
   getForecasts: (city) => {
-    Ajax.$http("http://www.yr.no/place/"+ city.country +"/"+ city.region +"/"+ city.name +"/forecast.xml")
-    .get()
-    .then((data) => {
-      return data
+    const promise = new Promise((resolve, reject) => {
+      Ajax.$http("http://opendata-download-metfcst.smhi.se/api/category/pmp2g/version/2/geotype/point/lon/" + city.lng + "/lat/" + city.lat + "/data.json")
+      .get()
+      .then((data) => {
+        resolve(
+          JSON.parse(data)
+        )
+      })
+      .catch((data) => {
+        reject((data) => { console.error(data) })
+      }) // TODO: Implement modal
     })
-    .catch((data) => { console.error(data) }) // TODO: Implement modal
+    return promise
   },
 }
 

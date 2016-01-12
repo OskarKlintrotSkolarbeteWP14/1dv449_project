@@ -4,9 +4,9 @@ import WeatherService from "../../weatherService"
 const {
 	RESET,
 	SET_CITY,
-	SET_CITIES,
+	GET_CITIES,
 	SET_XHR_CITIES,
-	SET_FORECASTS,
+	GET_FORECASTS,
 	SET_XHR_FORECASTS,
 } = ActionTypes
 
@@ -20,17 +20,17 @@ const AppActions = {
 			}, 1000)
 		}
 	},
-	setCities: (city) => {
+	getCities: (city) => {
 		return (dispatch, getState) => {
 			dispatch({
 				type: SET_XHR_CITIES,
 			})
 			WeatherService.getCities(city)
 				.then((cities) => {
-						dispatch({
-							type: SET_CITIES,
-							cities: cities,
-						})
+					dispatch({
+						type: GET_CITIES,
+						cities: cities,
+					})
 				})
 				.catch((data) => { console.error(data) })
 		}
@@ -46,6 +46,27 @@ const AppActions = {
 					country: country,
 				},
 			})
+		}
+	},
+	getForecasts: (city) => {
+		return (dispatch, getState) => {
+			dispatch({
+				type: SET_XHR_FORECASTS,
+				city: city,
+			})
+			WeatherService.getForecasts(city)
+				.then((data) => {
+					console.log(data)
+					dispatch({
+						type: GET_FORECASTS,
+						forecasts: data.forecasts,
+						credit: {
+							text: data.credit.text,
+							url: data.credit.url,
+						},
+					})
+				})
+				.catch((data) => { console.error(data) })
 		}
 	},
 }
