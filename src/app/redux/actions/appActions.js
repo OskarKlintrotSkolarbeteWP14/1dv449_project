@@ -60,10 +60,6 @@ const AppActions = {
 					dispatch({
 						type: GET_FORECASTS,
 						forecasts: data.forecasts,
-						credit: {
-							text: data.credit.text,
-							url: data.credit.url,
-						},
 					})
 				})
 				.catch((data) => { console.error(data) })

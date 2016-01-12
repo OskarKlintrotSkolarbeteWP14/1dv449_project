@@ -29,7 +29,7 @@ class Main extends React.Component {
 
     return (
       <div>
-        <h2>Fråga inte mig, fråga YR!</h2>
+        <h2>Fråga inte mig, fråga <s>YR</s> SMHI som tillåter CORS!</h2>
         <form>
           <div className="form-group">
             <label htmlFor="cityInput">Ort</label>
