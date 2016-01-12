@@ -10,7 +10,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props)
     const { geoId, name, region, country, lat, lng } = props.params
-    const { getForecasts } = props
+    const { getForecasts, getCities, reset } = props
     if (geoId) {
       getForecasts({
         id: geoId,
@@ -20,6 +20,7 @@ class Main extends React.Component {
         lat: lat,
         lng: lng,
       })
+      getCities(name)
     }
   }
 
@@ -30,16 +31,17 @@ class Main extends React.Component {
     return (
       <div>
         <h2>Fråga inte mig, fråga <s>YR</s> SMHI som tillåter CORS!</h2>
-        <form>
+        <form onSubmit={(e) => {
+            e.preventDefault()
+            getCities(this.refs.inputCity.value)
+            this.refs.inputCity.value = ""
+          }}>
           <div className="form-group">
             <label htmlFor="cityInput">Ort</label>
             <input type="text" className="form-control" id="cityInput" placeholder={ placeholder } ref="inputCity" autofocus autoComplete="off"></input>
           </div>
-          <button type="submit" className="btn btn-default" onClick={ () => {
-              getCities(this.refs.inputCity.value)
-              this.refs.inputCity.value = ""
-            }
-          } >Sök</button>
+          <button className="btn btn-default">Sök</button>
+          <Link to={'/'} type="button" className="btn btn-default" onClick={() => reset()}>Återställ</Link>
         </form>
         <Cities />
         <Forecasts />

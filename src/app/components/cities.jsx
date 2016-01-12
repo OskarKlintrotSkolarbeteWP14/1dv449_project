@@ -7,13 +7,20 @@ import ProgressBar from './shared/progressBar'
 
 class Cities extends React.Component {
   render() {
-    const { cities, getForecasts, xhrCities } = this.props
+    const { cities, getForecasts, xhrCities, xhrCitiesError } = this.props
 
     if (xhrCities) {
       return (
         <div>
           <h3>Orter</h3>
           <ProgressBar description='Söker efter orter...' />
+        </div>
+      )
+    } else if (xhrCitiesError) {
+      return (
+        <div>
+          <h3>Orter</h3>
+          <p>Det verkar som att det uppstod ett fel, troligtvis är antingen geonames API nere eller så är du offline.</p>
         </div>
       )
     } else if (cities === null) {
@@ -53,6 +60,7 @@ class Cities extends React.Component {
 Cities.propTypes = {
   cities: PropTypes.array,
   xhrCities: PropTypes.bool.isRequired,
+  xhrCitiesError: PropTypes.bool.isRequired,
   getForecasts: PropTypes.func.isRequired,
 }
 
@@ -60,6 +68,7 @@ const mapStateToProps = (state) => {
   return {
     cities: state.app.cities,
     xhrCities: state.app.xhrCities,
+    xhrCitiesError: state.app.xhrCitiesError,
   }
 }
 

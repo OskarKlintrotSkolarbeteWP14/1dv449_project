@@ -33,9 +33,38 @@ const WeatherService = {
       Ajax.$http("http://opendata-download-metfcst.smhi.se/api/category/pmp1.5g/version/1/geopoint/lat/" + city.lat + "/lon/" + city.lng + "/data.json")
       .get()
       .then((data) => {
-        resolve(
-          JSON.parse(data)
-        )
+        resolve({
+          referenceTime: JSON.parse(data).referenceTime,
+          forecasts: JSON.parse(data).timeseries
+            .filter((item) => new Date(item.validTime).getHours() === 13)
+            .map((item) => {
+              return ({
+                validTime: item.validTime,
+                temperature: item.t,
+              })
+            }),
+
+        })
+
+
+
+
+
+
+        // // .filter((item) => item.timeseries.validTime),
+        // const forecasts = JSON.parse(data)
+        //   // .map((item) => {
+        //   //   return ({
+        //   //     ...item,
+        //   //     timeseries: {
+        //   //       validTime: item.validTime,
+        //   //       temperature: item.t,
+        //   //     },
+        //   //   })
+        //   // })
+        // resolve({
+        //   forecasts: forecasts,
+        // })
       })
       .catch((data) => {
         reject((data) => { console.error(data) })

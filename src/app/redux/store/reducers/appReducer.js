@@ -8,6 +8,8 @@ const {
   SET_XHR_CITIES,
   GET_FORECASTS,
 	SET_XHR_FORECASTS,
+  SET_XHR_FORECASTS_ERROR,
+  SET_XHR_CITIES_ERROR,
 } = ActionTypesApp
 
 const AppReducer = (state, action) => {
@@ -32,7 +34,16 @@ const AppReducer = (state, action) => {
       return {
         ...state,
         xhrCities: true,
+        xhrCitiesError: false,
       }
+      break
+    case SET_XHR_CITIES_ERROR:
+      return {
+        ...state,
+        xhrCities: false,
+        xhrCitiesError: true,
+      }
+      break
     case GET_FORECASTS:
       return {
         ...state,
@@ -46,6 +57,14 @@ const AppReducer = (state, action) => {
         ...state,
         city: action.city,
         xhrForecasts: true,
+        xhrForecastsError: false,
+      }
+      break
+    case SET_XHR_FORECASTS_ERROR:
+      return {
+        ...state,
+        xhrForecasts: false,
+        xhrForecastsError: true,
       }
       break
     default:

@@ -6,18 +6,18 @@ const {
 	SET_CITY,
 	GET_CITIES,
 	SET_XHR_CITIES,
+	SET_XHR_CITIES_ERROR,
 	GET_FORECASTS,
 	SET_XHR_FORECASTS,
+	SET_XHR_FORECASTS_ERROR,
 } = ActionTypes
 
 const AppActions = {
 	resetApp: () => {
 		return (dispatch, getState) => {
-			setTimeout(function(){
-				dispatch({
-	        type: RESET,
-	      })
-			}, 1000)
+			dispatch({
+        type: RESET,
+      })
 		}
 	},
 	getCities: (city) => {
@@ -32,7 +32,12 @@ const AppActions = {
 						cities: cities,
 					})
 				})
-				.catch((data) => { console.error(data) })
+				.catch((data) => {
+					console.error(data)
+					dispatch({
+						type: SET_XHR_CITIES_ERROR,
+					})
+				})
 		}
 	},
 	setCity: (id, name, region, country) => {
@@ -59,14 +64,19 @@ const AppActions = {
 					console.log(data)
 					dispatch({
 						type: GET_FORECASTS,
-						forecasts: data.forecasts,
+						forecasts: data,
 						credit: {
-							text: "Vädret hämtas från smhi.se",
+							text: "Vädret hämtades från smhi.se",
 							url: "http://www.smhi.se/#ort=" + city.id + "," + city.name + ",,," + city.lat + "/" + city.lng,
 						},
 					})
 				})
-				.catch((data) => { console.error(data) })
+				.catch((data) => {
+					console.error(data)
+					dispatch({
+						type: SET_XHR_FORECASTS_ERROR,
+					})
+				})
 		}
 	},
 }

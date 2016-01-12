@@ -5,6 +5,8 @@ const InitialState = () => {
 			xhrCities: false,
 			cities: null,
 			xhrForecasts: false,
+			xhrCitiesError: false,
+			xhrForecastsError: false,
 			forecasts: null,
 			credit: {
 				text: null,
