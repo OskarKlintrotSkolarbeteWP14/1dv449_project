@@ -8,8 +8,8 @@ const WeatherService = {
       .then((data) => {
         resolve(
           JSON.parse(data).geonames
-          .filter((item) => item.fcl === 'P')
-          .filter((item) => item.countryName === 'Sweden' || item.countryName === 'Norway' || item.countryName === 'Denmark' || item.countryName === 'Finland')
+          .filter((item) => item.fcl.toLowerCase() === 'p')
+          .filter((item) => item.countryName.toLowerCase() === 'sweden' || item.countryName.toLowerCase() === 'norway' || item.countryName.toLowerCase() === 'denmark' || item.countryName.toLowerCase() === 'finland')
           .map((item) => {
             return {
               id: item.geonameId,
@@ -30,7 +30,7 @@ const WeatherService = {
   },
   getForecasts: (city) => {
     const promise = new Promise((resolve, reject) => {
-      Ajax.$http("http://opendata-download-metfcst.smhi.se/api/category/pmp2g/version/2/geotype/point/lon/" + city.lng + "/lat/" + city.lat + "/data.json")
+      Ajax.$http("http://opendata-download-metfcst.smhi.se/api/category/pmp1.5g/version/1/geopoint/lat/" + city.lat + "/lon/" + city.lng + "/data.json")
       .get()
       .then((data) => {
         resolve(

@@ -60,6 +60,10 @@ const AppActions = {
 					dispatch({
 						type: GET_FORECASTS,
 						forecasts: data.forecasts,
+						credit: {
+							text: "Vädret hämtas från smhi.se",
+							url: "http://www.smhi.se/#ort=" + city.id + "," + city.name + ",,," + city.lat + "/" + city.lng,
+						},
 					})
 				})
 				.catch((data) => { console.error(data) })
