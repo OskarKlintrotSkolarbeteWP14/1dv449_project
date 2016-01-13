@@ -65,7 +65,8 @@ var config = {
         loaders: [
             'react-hot',
             'babel?' + JSON.stringify({
-                presets: ["react", "es2015", "stage-1"],
+              plugins: ['transform-decorators-legacy' ],
+              presets: ["react", "es2015", "stage-1"],
             }),
         ],
       },

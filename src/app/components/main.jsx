@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import {Link} from 'react-router'
 import Actions from '../redux/actions/'
 
+import GeoSuggest from './react-google-places-suggest/'
+
 import Cities from './cities'
 import Forecasts from './forecasts'
 
@@ -24,8 +26,32 @@ class Main extends React.Component {
     }
   }
 
+  state = {
+    search: '',
+    selectedCoordinate: null,
+  };
+
+  handleSearchChange = (e) => {
+    this.setState({ search: e.target.value })
+  };
+
+  handleSelectSuggest = (suggestName, coordinate) => {
+    this.setState({ search: suggestName, selectedCoordinate: coordinate })
+    // getForecasts({
+    //   id: geoId,
+    //   name: suggestName,
+    //   region: region,
+    //   country: country,
+    //   lat: coordinate.latitude,
+    //   lng: coordinate.longitude,
+    // })
+    console.log(suggestName)
+    console.log(coordinate)
+  };
+
   render() {
     const { reset, getCities } = this.props
+    const { search } = this.state
     const placeholder = "Ange ort här..."
 
     return (
@@ -37,6 +63,17 @@ class Main extends React.Component {
             this.refs.inputCity.value = ""
           }}>
           <div className="form-group">
+            <label htmlFor="geosuggestInput">Ort</label>
+            <GeoSuggest onSelectSuggest={ this.handleSelectSuggest } search={ search }>
+              <input
+                className="form-control"
+                id="geosuggestInput"
+                type="text"
+                value={ search }
+                placeholder="Ange ort här..."
+                onChange={ this.handleSearchChange }
+              />
+            </GeoSuggest>
             <label htmlFor="cityInput">Ort</label>
             <input type="text" className="form-control" id="cityInput" placeholder={ placeholder } ref="inputCity" autofocus autoComplete="off"></input>
           </div>

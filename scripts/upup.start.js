@@ -3,6 +3,7 @@ UpUp.start({
   'assets': [
     'scripts/boundle.min.js',
     'css/main.css',
+    'css/places.css',
     'css/bootstrap.min.css',
     // Fill in with your own style sheets, scripts, images etc
   ],
