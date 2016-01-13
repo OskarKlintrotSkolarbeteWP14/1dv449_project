@@ -1,7 +1,7 @@
 {
-  "name": "Boilerplate",
+  "name": "Weather",
   "version": "0.0.1",
-  "description": "A boilerplate to quickly get started with an offline first React/Redux app",
+  "description": "An offline first React/Redux weather app",
   "repository": {
     "type": "git",
     "url": "https://github.com/OskarKlintrot/Offline-First-React-And-Redux-Boilerplate"
@@ -28,8 +28,6 @@
     "history": "^1.17.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
-    "react-google-maps-loader": "^1.0.1",
-    "react-google-places-suggest": "^1.0.1",
     "react-hot-loader": "^1.3.0",
     "react-mdl": "^1.0.2",
     "react-redux": "^4.0.4",
