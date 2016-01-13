@@ -11,23 +11,18 @@ import Forecasts from './forecasts'
 class Main extends React.Component {
   constructor(props) {
     super(props)
-    const { geonameId, name, lat, lng } = props.params
-    const { getForecasts, reset } = props
-
-    if (geonameId > 0 && name && lat && lng) {
+    const { geoId, name, region, country, lat, lng } = props.params
+    const { getForecasts, getCities, reset } = props
+    if (geoId) {
       getForecasts({
-        id: geonameId,
+        id: geoId,
         name: name,
+        region: region,
+        country: country,
         lat: lat,
         lng: lng,
       })
-    } else if (name && lat && lng) {
-      getForecasts({
-        id: null,
-        name: name,
-        lat: lat,
-        lng: lng,
-      })
+      getCities(name)
     }
   }
 
@@ -40,17 +35,17 @@ class Main extends React.Component {
     this.setState({ search: e.target.value })
   };
 
-  handleSelectSuggest = (suggestName, coordinate, suggest) => {
+  handleSelectSuggest = (suggestName, coordinate) => {
     this.setState({ search: suggestName, selectedCoordinate: coordinate })
     this.props.getForecasts({
       name: suggestName,
-      lat: +coordinate.latitude.toFixed(6),
-      lng: +coordinate.longitude.toFixed(6),
+      lat: coordinate.latitude,
+      lng: coordinate.longitude,
     })
   };
 
   render() {
-    const { reset } = this.props
+    const { reset, getCities } = this.props
     const { search } = this.state
     const placeholder = "Ange ort här..."
 
@@ -59,6 +54,8 @@ class Main extends React.Component {
         <h2>Fråga inte mig, fråga <s>YR</s> SMHI som tillåter CORS!</h2>
         <form onSubmit={(e) => {
             e.preventDefault()
+            getCities(this.refs.inputCity.value)
+            this.refs.inputCity.value = ""
           }}>
           <div className="form-group">
             <label htmlFor="geosuggestInput">Ort</label>
@@ -66,18 +63,17 @@ class Main extends React.Component {
               <input
                 className="form-control"
                 id="geosuggestInput"
-                ref="geo"
                 type="text"
                 value={ search }
                 placeholder="Ange ort här..."
                 onChange={ this.handleSearchChange }
               />
             </GeoSuggest>
+            <label htmlFor="cityInput">Ort</label>
+            <input type="text" className="form-control" id="cityInput" placeholder={ placeholder } ref="inputCity" autofocus autoComplete="off"></input>
           </div>
-          <Link to={'/'} type="button" className="btn btn-default" onClick={() => {
-              reset()
-              this.state.search = ""
-            }}>Återställ</Link>
+          <button className="btn btn-default">Sök</button>
+          <Link to={'/'} type="button" className="btn btn-default" onClick={() => reset()}>Återställ</Link>
         </form>
         <Cities />
         <Forecasts />
@@ -88,6 +84,7 @@ class Main extends React.Component {
 
 Main.propTypes = {
   reset: PropTypes.func.isRequired,
+  getCities: PropTypes.func.isRequired,
   getForecasts: PropTypes.func.isRequired,
 }
 
@@ -98,6 +95,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     reset: () => { dispatch(Actions.resetApp()) },
+    getCities: (city) => { dispatch(Actions.getCities(city)) },
     getForecasts: (city) => { dispatch(Actions.getForecasts(city)) },
   }
 }

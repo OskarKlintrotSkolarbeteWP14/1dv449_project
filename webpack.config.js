@@ -6,7 +6,7 @@ var nodeModulesPath = path.resolve(__dirname, 'node_modules')
 var upupPath = path.resolve(__dirname, 'src/app/scripts/upup/')
 var upupStartPath = path.resolve(__dirname, 'src/app/scripts/upup/upup.start.js')
 var materialPath = path.resolve(__dirname, 'src/app/scripts/material.js')
-var redirectToHTTPSPath = path.resolve(__dirname, 'src/app/scripts/redirectToHTTPS.js')
+var redirectToHTTPPath = path.resolve(__dirname, 'src/app/scripts/redirectToHTTP.js')
 var TransferWebpackPlugin = require('transfer-webpack-plugin')
 
 const production = process.argv.find((element) => element === '--production') ? true : false
@@ -14,7 +14,7 @@ const production = process.argv.find((element) => element === '--production') ? 
 const jsBaseEntry = [
   'babel-polyfill',
   './src/app/app.jsx',
-  './src/app/scripts/redirectToHTTPS.js',
+  './src/app/scripts/redirectToHTTP.js',
 ]
 
 const jsEntry = production ? jsBaseEntry.concat([
@@ -55,13 +55,13 @@ var config = {
         test: /\.(js|jsx)$/,
         loader: 'eslint-loader',
         include: [path.resolve(__dirname, "src/app")],
-        exclude: [nodeModulesPath, upupPath, materialPath, redirectToHTTPSPath],
+        exclude: [nodeModulesPath, upupPath, materialPath, redirectToHTTPPath],
       },
     ],
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        exclude: [nodeModulesPath, upupPath, materialPath, redirectToHTTPSPath],
+        exclude: [nodeModulesPath, upupPath, materialPath, redirectToHTTPPath],
         loaders: [
             'react-hot',
             'babel?' + JSON.stringify({
@@ -75,7 +75,7 @@ var config = {
         loader: "file?name=[name].[ext]",
       },
       {
-        test: /(material|redirectToHTTPS).js$/,
+        test: /(material|redirectToHTTP).js$/,
         loader: "file?name=scripts/[name].[ext]",
       },
       {

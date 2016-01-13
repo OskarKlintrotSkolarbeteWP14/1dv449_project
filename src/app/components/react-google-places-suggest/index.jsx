@@ -40,7 +40,7 @@ export default class GeoSuggest extends Component {
 
     this.geocodeSuggest(suggest.label, () => {
       this.setState({ selectedLabel: suggest.label, suggests: [] }, () => {
-        onSelectSuggest(suggest.label, this.state.coordinate)
+        onSelectSuggest(suggest.label, this.state.coordinate, suggest)
       })
     })
   };
@@ -50,7 +50,7 @@ export default class GeoSuggest extends Component {
     const autocompleteService = new googleMaps.places.AutocompleteService(
       null,
       {
-        types: ['cities'], // geocode
+        types: ['geocode'],
         componentRestrictions: {'country': 'se'},
       }
     )

@@ -9,8 +9,8 @@ const InitialState = () => {
 			xhrForecastsError: false,
 			forecasts: null,
 			credit: {
-				text: null,
-				url: null,
+				text: "Vädret hämtades från smhi.se",
+				url: "http://www.smhi.se",
 			},
 		},
 		settings: {

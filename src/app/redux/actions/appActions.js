@@ -10,6 +10,7 @@ const {
 	GET_FORECASTS,
 	SET_XHR_FORECASTS,
 	SET_XHR_FORECASTS_ERROR,
+	SET_GEONAME_ID,
 } = ActionTypes
 
 const AppActions = {
@@ -55,19 +56,22 @@ const AppActions = {
 	},
 	getForecasts: (city) => {
 		return (dispatch, getState) => {
+			const cityName = city.name.indexOf(',') > 0 ? city.name.slice(0, city.name.indexOf(',')) : city.name
+
 			dispatch({
 				type: SET_XHR_FORECASTS,
 				city: city,
 			})
 			WeatherService.getForecasts(city)
 				.then((data) => {
-					console.log(data)
+					// console.log(data)
 					dispatch({
 						type: GET_FORECASTS,
 						forecasts: data,
-						credit: {
-							text: "Vädret hämtades från smhi.se",
-							url: "http://www.smhi.se/#ort=" + city.id + "," + city.name + ",,," + city.lat + "/" + city.lng,
+						meta: {
+							transition: (state, action) => ({
+								path: `/0/${city.name}/${city.lat}/${city.lng}`,
+							}),
 						},
 					})
 				})
@@ -76,6 +80,24 @@ const AppActions = {
 					dispatch({
 						type: SET_XHR_FORECASTS_ERROR,
 					})
+				})
+
+				WeatherService.getGeonameId({ name: cityName, lat: city.lat, lng: city.lng })
+					.then((geonameId) => {
+						console.log(geonameId, city)
+						dispatch({
+							type: SET_GEONAME_ID,
+							id: geonameId,
+							credit: {
+								text: "Vädret hämtades från smhi.se",
+								url: "http://www.smhi.se/#ort=" + geonameId + "," + cityName + ",,," + city.lat + "/" + city.lng,
+							},
+							meta: {
+								transition: (state, action) => ({
+									path: `/${geonameId}/${city.name}/${city.lat}/${city.lng}`,
+								}),
+							},
+						})
 				})
 		}
 	},

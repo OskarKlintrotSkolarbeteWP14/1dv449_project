@@ -1,26 +1,46 @@
 import Ajax from './ajax'
 
 const WeatherService = {
-  getCities: (city) => {
+  // Old code using geonames
+ /*  getCities: (city) => {
+  *    const promise = new Promise((resolve, reject) => {
+  *      Ajax.$http("http://api.geonames.org/searchJSON?name=" + city + "&maxRows=50&username=oklib08")
+  *      .get()
+  *      .then((data) => {
+  *        resolve(
+  *          JSON.parse(data).geonames
+  *          .filter((item) => item.fcl.toLowerCase() === 'p')
+  *          .filter((item) => item.countryName.toLowerCase() === 'sweden' || item.countryName.toLowerCase() === 'norway' || item.countryName.toLowerCase() === 'denmark' || item.countryName.toLowerCase() === 'finland')
+  *          .map((item) => {
+  *            return {
+  *              id: item.geonameId,
+  *              name: item.name,
+  *              region: item.adminName1,
+  *              country: item.countryName,
+  *              lat: item.lat,
+  *              lng: item.lng,
+  *            }
+  *          })
+  *        )
+  *      })
+  *      .catch((data) => {
+  *        reject((data) => { console.error(data) })
+  *      }) // TODO: Implement modal
+  *    })
+  *    return promise
+  *  },
+  */
+  getGeonameId: (city) => {
     const promise = new Promise((resolve, reject) => {
-      Ajax.$http("http://api.geonames.org/searchJSON?name=" + city + "&maxRows=50&username=oklib08")
+      Ajax.$http("http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + city.lat + "&lng=" + city.lng + "&username=oklib08")
       .get()
       .then((data) => {
         resolve(
           JSON.parse(data).geonames
-          .filter((item) => item.fcl.toLowerCase() === 'p')
-          .filter((item) => item.countryName.toLowerCase() === 'sweden' || item.countryName.toLowerCase() === 'norway' || item.countryName.toLowerCase() === 'denmark' || item.countryName.toLowerCase() === 'finland')
-          .map((item) => {
-            return {
-              id: item.geonameId,
-              name: item.name,
-              region: item.adminName1,
-              country: item.countryName,
-              lat: item.lat,
-              lng: item.lng,
-            }
-          })
-        )
+            .filter((item) => item.fcl.toLowerCase() === 'p')
+            .filter((item) => item.name.toLowerCase() === city.name.toLowerCase())
+            .map((item) => item.geonameId)[0],
+          )
       })
       .catch((data) => {
         reject((data) => { console.error(data) })

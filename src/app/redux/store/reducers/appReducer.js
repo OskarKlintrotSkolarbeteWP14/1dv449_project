@@ -10,6 +10,7 @@ const {
 	SET_XHR_FORECASTS,
   SET_XHR_FORECASTS_ERROR,
   SET_XHR_CITIES_ERROR,
+  SET_GEONAME_ID,
 } = ActionTypesApp
 
 const AppReducer = (state, action) => {
@@ -49,7 +50,6 @@ const AppReducer = (state, action) => {
         ...state,
         forecasts: action.forecasts,
         xhrForecasts: false,
-        credit: action.credit,
       }
       break
     case SET_XHR_FORECASTS:
@@ -67,6 +67,15 @@ const AppReducer = (state, action) => {
         xhrForecastsError: true,
       }
       break
+    case SET_GEONAME_ID:
+      return {
+        ...state,
+        credit: action.credit,
+        city: {
+          ...state.city,
+          id: action.id,
+        },
+      }
     default:
       return state || InitialState().app
   }
