@@ -17,6 +17,16 @@ const Store = configureStore(InitialState(), history)
 //Needed for React Developer Tools
 window.React = React
 
+// Ugly hack to solve a Chrome on Windows specific bug with Offline.js
+const offlineCheck = () => {
+  setTimeout(() => {
+  Offline.check()
+  offlineCheck()
+  }, 1000)
+}
+
+offlineCheck()
+
 /*
  * Needed for onTouchTap
  * Can go away when react 1.0 release

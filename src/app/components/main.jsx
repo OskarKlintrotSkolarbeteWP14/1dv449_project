@@ -13,18 +13,8 @@ class Main extends React.Component {
   constructor(props) {
     super(props)
 
-    // Ugly hack to solve a Chrome on Windows specific bug with Offline.js
-    const offlineCheck = () => {
-      setTimeout(() => {
-      Offline.check()
-      offlineCheck()
-      }, 1000)
-    }
-
-    offlineCheck()
-
     const { geonameId, id, name, lat, lng } = props.params
-    const { getForecasts, reset } = props
+    const { getForecasts, reset, offline } = props
 
     if (geonameId > 0 && id && name && lat && lng) {
       getForecasts({
@@ -43,11 +33,13 @@ class Main extends React.Component {
         lng: lng,
       })
     }
+
   }
 
   state = {
     search: '',
     selectedCoordinate: null,
+    offline: false,
   };
 
   handleSearchChange = (e) => {
@@ -64,6 +56,19 @@ class Main extends React.Component {
     })
   };
 
+  // The following are ugly offline.js Chrome hack
+  offlineCheck() {
+    setTimeout(() => {
+      this.setState({offline: Offline.state === 'down'})
+      this.offlineCheck()
+      console.log(this.state.offline)
+    }, 1000)
+  }
+
+  componentDidMount() {
+    this.offlineCheck()
+  }
+
   render() {
     const { reset, xhrPlacesError } = this.props
     const { search } = this.state
@@ -71,32 +76,44 @@ class Main extends React.Component {
 
     return (
       <div>
-        <h2>Fråga inte mig, fråga <s>YR</s> SMHI som tillåter CORS!</h2>
+        <h2>Fråga SMHI!</h2>
         <form onSubmit={(e) => {
             e.preventDefault()
           }}>
           <div className="form-group">
-            <label htmlFor="geosuggestInput">Ort</label>
-            <GeoSuggest onSelectSuggest={ this.handleSelectSuggest } search={ search }>
-              <input
-                className="form-control"
-                id="geosuggestInput"
-                ref="geo"
-                type="text"
-                value={ search }
-                placeholder="Ange ort här..."
-                onChange={ this.handleSearchChange }
-              />
-            </GeoSuggest>
+            <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <label htmlFor="geosuggestInput">Ort</label>
+              <GeoSuggest onSelectSuggest={ this.handleSelectSuggest } search={ search }>
+                <input
+                  className="form-control"
+                  id="geosuggestInput"
+                  ref="geo"
+                  type="text"
+                  value={ search }
+                  placeholder="Ange ort här..."
+                  onChange={ this.handleSearchChange }
+                />
+              </GeoSuggest>
+              {
+                (() => {
+                  if (this.state.offline) {
+                    return <p><em>Observera att du verkar vara offline!</em></p>
+                  }
+                })()
+              }
+              <Link to={'/'} type="button" className="btn btn-default" onClick={() => {
+                  reset()
+                  this.state.search = ""
+                }}>Återställ</Link>
+              <hr></hr>
+            </div>
           </div>
-          <Link to={'/'} type="button" className="btn btn-default" onClick={() => {
-              reset()
-              this.state.search = ""
-            }}>Återställ</Link>
         </form>
-        <PlacesError error={ xhrPlacesError } />
-        <Cities />
-        <Forecasts />
+        <div className="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <PlacesError error={ xhrPlacesError } />
+          <Cities />
+          <Forecasts />
+        </div>
       </div>
     )
   }
