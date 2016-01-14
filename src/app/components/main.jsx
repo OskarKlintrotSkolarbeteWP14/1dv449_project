@@ -61,7 +61,6 @@ class Main extends React.Component {
     setTimeout(() => {
       this.setState({offline: Offline.state === 'down'})
       this.offlineCheck()
-      console.log(this.state.offline)
     }, 1000)
   }
 
