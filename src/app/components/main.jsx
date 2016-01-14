@@ -13,6 +13,16 @@ class Main extends React.Component {
   constructor(props) {
     super(props)
 
+    // Ugly hack to solve a Chrome on Windows specific bug with Offline.js
+    const offlineCheck = () => {
+      setTimeout(() => {
+      Offline.check()
+      offlineCheck()
+      }, 1000)
+    }
+
+    offlineCheck()
+
     const { geonameId, id, name, lat, lng } = props.params
     const { getForecasts, reset } = props
 
