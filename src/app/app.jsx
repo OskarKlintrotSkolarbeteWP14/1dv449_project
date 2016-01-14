@@ -17,6 +17,8 @@ const Store = configureStore(InitialState(), history)
 //Needed for React Developer Tools
 window.React = React
 
+Offline.check()
+
 /*
  * Needed for onTouchTap
  * Can go away when react 1.0 release

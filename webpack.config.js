@@ -5,7 +5,7 @@ var sourcePath = path.resolve(__dirname, 'src')
 var nodeModulesPath = path.resolve(__dirname, 'node_modules')
 var upupPath = path.resolve(__dirname, 'src/app/scripts/upup/')
 var upupStartPath = path.resolve(__dirname, 'src/app/scripts/upup/upup.start.js')
-var materialPath = path.resolve(__dirname, 'src/app/scripts/material.js')
+var offlinePath = path.resolve(__dirname, 'src/app/scripts/offline.min.js')
 var redirectToHTTPPath = path.resolve(__dirname, 'src/app/scripts/redirectToHTTP.js')
 var TransferWebpackPlugin = require('transfer-webpack-plugin')
 
@@ -15,12 +15,14 @@ const jsBaseEntry = [
   'babel-polyfill',
   './src/app/app.jsx',
   './src/app/scripts/redirectToHTTP.js',
+  './src/app/scripts/offline.min.js',
 ]
 
 const jsEntry = production ? jsBaseEntry.concat([
-  './src/app/scripts/upup/upup.start.js',
-  './src/app/scripts/upup/upup.min.js',
-  './src/app/scripts/upup/upup.sw.min.js',
+  // './src/app/scripts/upup/upup.start.js',
+  // './src/app/scripts/upup/upup.min.js',
+  // './src/app/scripts/upup/upup.sw.min.js',
+  // './src/app/scripts/offline.min.js',
 ]) : jsBaseEntry
 
 var config = {
@@ -55,13 +57,13 @@ var config = {
         test: /\.(js|jsx)$/,
         loader: 'eslint-loader',
         include: [path.resolve(__dirname, "src/app")],
-        exclude: [nodeModulesPath, upupPath, materialPath, redirectToHTTPPath],
+        exclude: [nodeModulesPath, upupPath, redirectToHTTPPath, offlinePath],
       },
     ],
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        exclude: [nodeModulesPath, upupPath, materialPath, redirectToHTTPPath],
+        exclude: [nodeModulesPath, upupPath, redirectToHTTPPath, offlinePath],
         loaders: [
             'react-hot',
             'babel?' + JSON.stringify({
@@ -75,7 +77,7 @@ var config = {
         loader: "file?name=[name].[ext]",
       },
       {
-        test: /(material|redirectToHTTP).js$/,
+        test: /(offline.*|redirectToHTTP).js$/,
         loader: "file?name=scripts/[name].[ext]",
       },
       {
