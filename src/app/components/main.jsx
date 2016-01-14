@@ -11,19 +11,21 @@ import Forecasts from './forecasts'
 class Main extends React.Component {
   constructor(props) {
     super(props)
-    const { geonameId, name, lat, lng } = props.params
+    const { geonameId, id, name, lat, lng } = props.params
     const { getForecasts, reset } = props
 
-    if (geonameId > 0 && name && lat && lng) {
+    if (geonameId > 0 && id && name && lat && lng) {
       getForecasts({
-        id: geonameId,
+        geonameId: geonameId,
+        id: id,
         name: name,
         lat: lat,
         lng: lng,
       })
-    } else if (name && lat && lng) {
+    } else if (id && name && lat && lng) {
       getForecasts({
-        id: null,
+        geonameId: null,
+        id: id,
         name: name,
         lat: lat,
         lng: lng,
@@ -40,9 +42,10 @@ class Main extends React.Component {
     this.setState({ search: e.target.value })
   };
 
-  handleSelectSuggest = (suggestName, coordinate, suggest) => {
+  handleSelectSuggest = (suggestId, suggestName, coordinate) => {
     this.setState({ search: suggestName, selectedCoordinate: coordinate })
     this.props.getForecasts({
+      id: suggestId,
       name: suggestName,
       lat: +coordinate.latitude.toFixed(6),
       lng: +coordinate.longitude.toFixed(6),

@@ -73,7 +73,7 @@ const AppReducer = (state, action) => {
         credit: action.credit,
         city: {
           ...state.city,
-          id: action.id,
+          geonameId: action.geonameId,
         },
       }
     default:

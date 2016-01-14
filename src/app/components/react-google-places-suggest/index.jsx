@@ -40,7 +40,7 @@ export default class GeoSuggest extends Component {
 
     this.geocodeSuggest(suggest.label, () => {
       this.setState({ selectedLabel: suggest.label, suggests: [] }, () => {
-        onSelectSuggest(suggest.label, this.state.coordinate, suggest)
+        onSelectSuggest(suggest.id, suggest.label, this.state.coordinate)
       })
     })
   };
@@ -71,11 +71,14 @@ export default class GeoSuggest extends Component {
       }
 
       const suggests = googleSuggests.map((suggest, key) => {
+        const { place_id } = suggest
         const [ label, ...items ] = suggest.terms
+
         const address = items.map((item) => item.value).join(', ')
         const firstMatchedString = suggest.matched_substrings.shift()
 
         return {
+          id: place_id,
           label: label.value + (address.length > 0 ? ', ' + address : ''),
           labelParts: {
             before: label.value.substr(0, firstMatchedString.offset),

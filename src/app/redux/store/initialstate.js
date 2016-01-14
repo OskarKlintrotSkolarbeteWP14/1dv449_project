@@ -1,7 +1,9 @@
 const InitialState = () => {
 	return {
 		app: {
-			city: null,
+			city: {
+				geonameId: 0,
+			},
 			xhrCities: false,
 			cities: null,
 			xhrForecasts: false,

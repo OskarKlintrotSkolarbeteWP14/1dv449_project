@@ -9,7 +9,7 @@ import About from './components/about.jsx'
 export default (
   <Route path="/" component={Wrapper}>
     <IndexRoute component={Main} />
-    <Route path="/:geonameId/:name/:lat/:lng" component={Main} />
+    <Route path="/:geonameId/:id/:name/:lat/:lng" component={Main} />
     <Route path="/about" component={About}/>
     <Route path="*" component={NoMatch}/>
   </Route>

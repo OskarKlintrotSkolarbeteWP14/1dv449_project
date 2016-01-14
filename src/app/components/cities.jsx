@@ -39,10 +39,10 @@ class Cities extends React.Component {
           <ul>
             { cities.map((city) => <li>
               <Link to={
-                '/' + city.id + '/' + city.name + '/' + city.region + '/' + city.country + '/' + city.lat + '/' + city.lng
+                '/' + city.geonameId + '/' + city.name + '/' + city.region + '/' + city.country + '/' + city.lat + '/' + city.lng
               }
               onClick={() => getForecasts({
-                id: city.id,
+                geonameId: city.geonameId,
                 name: city.name,
                 region: city.region,
                 country: city.country,
