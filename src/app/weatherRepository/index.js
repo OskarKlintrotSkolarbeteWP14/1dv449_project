@@ -6,8 +6,25 @@ const WeatherRepository = {
   getForecasts: (city) => {
     if (StorageAvailable('localStorage')) {
       if (localStorage.forecasts && JSON.parse(localStorage.forecasts)[city.id]) {
+        // Remove forecasts where the last date has past
+        let removedStaleWeather = {}
+        for (const item in JSON.parse(localStorage.forecasts)) {
+          const length = JSON.parse(localStorage.forecasts)[item].forecasts.forecasts.length - 1
+          const lastForecast = new Date(JSON.parse(localStorage.forecasts)[item].forecasts.forecasts[length].validTime)
+          if (lastForecast > new Date()) {
+            removedStaleWeather[item] = JSON.parse(localStorage.forecasts)[item]
+          }
+        }
+        localStorage.forecasts = JSON.stringify(removedStaleWeather)
+
+        // Return forecast if not stale or offline
         const stale = new Date(JSON.parse(localStorage.forecasts)[city.id].timestamp).getTime() + caching * 1000 < new Date().getTime()
-        return stale ? null : JSON.parse(localStorage.forecasts)[city.id]
+
+        if (Offline.state === 'down') {
+          return JSON.parse(localStorage.forecasts)[city.id]
+        } else {
+          return stale ? null : JSON.parse(localStorage.forecasts)[city.id]
+        }
       }
       return null
     } else {

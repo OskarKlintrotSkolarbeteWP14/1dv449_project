@@ -11,6 +11,8 @@ const {
   SET_XHR_FORECASTS_ERROR,
   SET_XHR_CITIES_ERROR,
   SET_GEONAME_ID,
+  SET_XHR_PLACES_ERROR,
+  UNSET_XHR_PLACES_ERROR,
 } = ActionTypesApp
 
 const AppReducer = (state, action) => {
@@ -76,6 +78,19 @@ const AppReducer = (state, action) => {
           geonameId: action.geonameId,
         },
       }
+      break
+    case SET_XHR_PLACES_ERROR:
+      return {
+        ...state,
+        xhrPlacesError: true,
+      }
+      break
+    case UNSET_XHR_PLACES_ERROR:
+      return {
+        ...state,
+        xhrPlacesError: false,
+      }
+      break
     default:
       return state || InitialState().app
   }

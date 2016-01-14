@@ -5,8 +5,11 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import googleMapsLoader from './react-google-maps-loader'
 
+import { connect } from 'react-redux'
+import Actions from '../../redux/actions/'
+
 @googleMapsLoader({ libraries: 'places' })
-export default class GeoSuggest extends Component {
+class GeoSuggest extends Component {
   static propTypes = {
     onSelectSuggest: PropTypes.func,
     search: PropTypes.string,
@@ -66,10 +69,11 @@ export default class GeoSuggest extends Component {
       radius: suggestRadius,
     }, (googleSuggests) => {
       if (!googleSuggests) {
+        this.props.setXhrPlacesError()
         this.setState({suggests: []})
         return
       }
-
+      this.props.unsetXhrPlacesError()
       const suggests = googleSuggests.map((suggest, key) => {
         const { place_id } = suggest
         const [ label, ...items ] = suggest.terms
@@ -187,3 +191,16 @@ export default class GeoSuggest extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return { }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setXhrPlacesError: () => { dispatch(Actions.setXhrPlacesError()) },
+    unsetXhrPlacesError: () => { dispatch(Actions.unsetXhrPlacesError()) },
+  }
+}
+
+export default connect(null, mapDispatchToProps)(GeoSuggest)

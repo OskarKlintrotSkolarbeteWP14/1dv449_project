@@ -7,10 +7,12 @@ import GeoSuggest from './react-google-places-suggest/'
 
 import Cities from './cities'
 import Forecasts from './forecasts'
+import PlacesError from './placesError'
 
 class Main extends React.Component {
   constructor(props) {
     super(props)
+
     const { geonameId, id, name, lat, lng } = props.params
     const { getForecasts, reset } = props
 
@@ -53,7 +55,7 @@ class Main extends React.Component {
   };
 
   render() {
-    const { reset } = this.props
+    const { reset, xhrPlacesError } = this.props
     const { search } = this.state
     const placeholder = "Ange ort här..."
 
@@ -82,6 +84,7 @@ class Main extends React.Component {
               this.state.search = ""
             }}>Återställ</Link>
         </form>
+        <PlacesError error={ xhrPlacesError } />
         <Cities />
         <Forecasts />
       </div>
@@ -95,7 +98,7 @@ Main.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-  return { }
+  return { xhrPlacesError: state.app.xhrPlacesError }
 }
 
 const mapDispatchToProps = (dispatch) => {

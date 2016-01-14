@@ -9,6 +9,7 @@ const InitialState = () => {
 			xhrForecasts: false,
 			xhrCitiesError: false,
 			xhrForecastsError: false,
+			xhrPlacesError: false,
 			forecasts: null,
 			credit: {
 				text: "Vädret hämtades från smhi.se",

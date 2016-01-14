@@ -6,7 +6,7 @@ import ProgressBar from './shared/progressBar'
 
 class Forecasts extends React.Component {
   render() {
-    const { forecasts, xhrForecasts, xhrForecastsError, credit, reset } = this.props
+    const { city, forecasts, xhrForecasts, xhrForecastsError, credit, reset } = this.props
 
     if (xhrForecasts) {
       return (
@@ -28,6 +28,7 @@ class Forecasts extends React.Component {
       return (
         <div>
           <h3>Väder</h3>
+          <h4>{ city.name }</h4>
           { forecasts.forecasts.map((item) => { return (
             <div>
               <h4>{ new Date(item.validTime).toLocaleDateString() }</h4>
@@ -56,6 +57,7 @@ const mapStateToProps = (state) => {
     xhrForecasts: state.app.xhrForecasts,
     xhrForecastsError: state.app.xhrForecastsError,
     credit: state.app.credit,
+    city: state.app.city,
   }
 }
 

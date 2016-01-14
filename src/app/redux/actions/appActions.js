@@ -11,6 +11,8 @@ const {
 	SET_XHR_FORECASTS,
 	SET_XHR_FORECASTS_ERROR,
 	SET_GEONAME_ID,
+	SET_XHR_PLACES_ERROR,
+	UNSET_XHR_PLACES_ERROR,
 } = ActionTypes
 
 const AppActions = {
@@ -19,6 +21,20 @@ const AppActions = {
 			dispatch({
         type: RESET,
       })
+		}
+	},
+	setXhrPlacesError: () => {
+		return (dispatch, getState) => {
+			dispatch({
+				type: SET_XHR_PLACES_ERROR,
+			})
+		}
+	},
+	unsetXhrPlacesError: () => {
+		return (dispatch, getState) => {
+			dispatch({
+				type: UNSET_XHR_PLACES_ERROR,
+			})
 		}
 	},
 	getCities: (city) => {
