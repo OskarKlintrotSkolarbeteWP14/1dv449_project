@@ -63,7 +63,7 @@ var config = {
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        exclude: [nodeModulesPath, upupPath, redirectToHTTPPath],
+        exclude: [nodeModulesPath, upupPath, redirectToHTTPPath, offlinePath],
         loaders: [
             'react-hot',
             'babel?' + JSON.stringify({
@@ -77,7 +77,7 @@ var config = {
         loader: "file?name=[name].[ext]",
       },
       {
-        test: /(redirectToHTTP).js$/,
+        test: /(offline.*|redirectToHTTP).js$/,
         loader: "file?name=scripts/[name].[ext]",
       },
     ],

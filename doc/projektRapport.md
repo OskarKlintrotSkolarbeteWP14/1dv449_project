@@ -1,4 +1,5 @@
 # Väderapplikation, _slutprojekt i 1dv449_
+
 Applikationen är publicerad här; http://weather.oskarklintrot.se/
 
 ## Inledning
@@ -31,7 +32,7 @@ Sidan börjar inte renderas förrän all CSS är inläst, därför ligger all CS
 
 ### Minifierade filer
 
-Alla CSS filer borde vara minifierade till en [1], vilket tyvärr inte är fallet. Detta på grund av tidsbrist till att lära mig hur det fungerar att minifiera med hjälp av webpack, som jag använder för att bygga sidan. Dock används den minifierade versionen av Bootstrap. När det gäller Javascript-filerna är allt minifierat till en enda boundle för att minska HTTP-anropen och minska storleken på filerna [1] *(OBS! Detta gjordes nyligen, syns det inte på http://weather.oskarklintrot.se så har inte CF cahce uppdaterats än men då syns det här; http://oskarklintrotskolarbetewp14.github.io/1dv449_project)*.
+Alla CSS filer borde vara minifierade till en [1], vilket tyvärr inte är fallet. Detta på grund av tidsbrist till att lära mig hur det fungerar att minifiera med hjälp av webpack, som jag använder för att bygga sidan. Dock används den minifierade versionen av Bootstrap. När det gäller Javascript-filerna är allt minifierat till en enda boundle för att minska HTTP-anropen och minska storleken på filerna [1]. Dock är inte Offline.js-minifierade bibliotek inkluderat i boundlen utan ligger för sig själv. Detta eftersom Offline.js slutade fungera när den lades in som en del av boundlen *(OBS! Detta gjordes nyligen, syns det inte på http://weather.oskarklintrot.se så har inte CF cahce uppdaterats än men då syns det här; http://oskarklintrotskolarbetewp14.github.io/1dv449_project)*.
 
 ### Caching
 
