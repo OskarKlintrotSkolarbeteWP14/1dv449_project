@@ -26,9 +26,11 @@ Det som kan vara värt att notera är att Geoname API enbart används, som det s
 
 ### CSS först, JS sist
 
+Sidan börjar inte renderas förrän all CSS är inläst, därför ligger all CSS redan i headern. All Javascript ligger å andra sidan sist för att tillåta att sidans html skrivs ut först för att ge en proggressiv rendering av sidan [1]. I just detta fallet är det dock mer teori än praktik eftersom applikationen är en SPA och all Javascript finns i en enda fil, vilket i praktiken innebär att den kommer ändå inte renderas proggressivt utan först när den filen är inläst.
+
 ### Minifierade filer
 
-Alla CSS filer borde vara minifierade till en [1], vilket tyvärr inte är fallet. Detta på grund av tidsbrist till att lära mig hur det fungerar att minifiera med hjälp av webpack, som jag använder för att bygga sidan. Dock används den minifierade versionen av Bootstrap. När det gäller Javascript-filerna är allt minifierat till en enda boundle för att minska HTTP-anropen och minska storleken på filerna [1].
+Alla CSS filer borde vara minifierade till en [1], vilket tyvärr inte är fallet. Detta på grund av tidsbrist till att lära mig hur det fungerar att minifiera med hjälp av webpack, som jag använder för att bygga sidan. Dock används den minifierade versionen av Bootstrap. När det gäller Javascript-filerna är allt minifierat till en enda boundle för att minska HTTP-anropen och minska storleken på filerna [1] *(OBS! Detta gjordes nyligen, syns det inte på http://weather.oskarklintrot.se så har inte CF cahce uppdaterats än men då syns det här; http://oskarklintrotskolarbetewp14.github.io/1dv449_project)*.
 
 ### Caching
 
@@ -48,13 +50,29 @@ React använder sig av deras så kallade Virtual DOM. Det fungerar genom att all
 
 Något som är värt att nämna kring säkerhet och React som är viktigt när det gäller att använda API:er är att React själv sköter escaping/sanatizing av datan från API:erna (och all annan data som ska renderas som inte är skrivet i JSX i själva komponenten) innan den skrivs ut till klienten [3]. Har alltså exempelvis SMHI:s API blivit hackat och någon försöker göra en XSS genom att lägga in script i deras API kommer den datan inte göra någon skada, förutom att det kommer att se märkligt ut när temperaturen istället består av Javascript kod.
 
+### Client only
+
+Visst finns risken att någon hackar Githubs servrar för skojs skull men då sidan enbart lever på klienten finns inte mycket att göra där. Det finns inga inloggningar, inga hemliga API-nycklar, inga credentials till någon databas. Sidan är helt enkelt väldigt tråkig för en hackare, vilket ökar säkerheten.
+
 ## Offline-first
+
+Tappar användaren uppkopplingen kommer ett flashmessage upp om att uppkopplingen är borta samt ett varningsmeddelande i samband med den enda textboxen på sidan. Detta för att förvarna användaren om att sidan troligtvis inte kommer fungera för tillfället. Dock går det fortfarande att söka efter vädret på de orter som tidigare har besökts och som finns cachade både av Google Places Autocomplete och av denna applikationen. Dock krävs det oftast att användaren sökt minst två gånger på samma ort innan sökningen cachas. Testa gärna att gå in på applikationen och sök fram och tillbaka på några orter och sen stäng av uppkopplingen och sök på de tidigare orterna och se att vädret ändras. Tanken var att implementera en feature som växlar mellan två autocomplete, Google Places API Autocomplete och jQuery UI Autocomplete, där den förstnämna hämtar sin data från Googles servrar och den sistnämnda kopplas in ifall uppkopplingen försvinner och som istället hämtar sin data från localstorage så att användaren kan se vilka orter som går att kolla vädret för. Gamla väderrapporter rensas ut innan väderrapporter retuneras från localstorage och Offline.js används för att kontrollera i React-komponenten `Main` ifall användaren är online eller offline. Så det enda som återstod var att implementera jQuery UI Autocomplete men tyvärr räckte inte tiden till hela vägen. Tanken fanns också på att komplettera Offline.js med HTML5 AppCache för att hindra sidan från att sluta fungera om användaren exempelvis uppdaterar sidan offline men dels fanns inte tiden och dels är HTML5 AppCache redan en föråldrad teknik och egentligen inte bör användas alls [4].
 
 ## Risker
 
+Eftersom applikationen inte hantera några känsliga datan som personuppgifter eller lösenord finns inga större risker med den. Största risken vore om någon ville öka belastningen på underliggande API:er. Dock kommer antagligen applikationen bara bli blockerad innan någon skada är skedd. Eftersom denna applikationen bara behöver överleva tills den är betygsatt är inte detta ett problem. En möjlig lösning kunde vara att sätta en liten fördröjning på varje AJAX-anrop för att minska belastningen på servern utan att användaren behöver märka något. En till lösning kan vara att sätta en begränsning på antal möjliga API-anrop under en viss tid eller sätta en fördröjning till när nästa AJAX-anrop tidigast kan skickas. Några etiska övervägande är svåra att göra kring en väderraport utan att det blir alltför krystat.
+
 ## Egna reflektioner och funderingar
 
+Efter allt strul med API:er och HTTPS är jag just nu mest glad att ha något att visa upp och vill mest bli av med den. Dessutom hann jag inte med att implementera möjligheten att söka bland cachen, vilket jag känner var ett stort misslyckande. Till exempel hade jag kunnat struntat i att lägga tid på att implementera att hämta geonameId för att kunna länka till SMHI. Visst, det är en snygg touch men ingen lär lägga märke till det. Den tiden hade jag gärna lagt på att implementera den sista biten med att kunna söka i cachen istället. Jag var från början inställd på att göra så att applikationen fungerar offline på samma sätt som min applikation i RIA-kursen men istället blev det bara ett litet flash message. Det känns som ett stort nederlag då jag redan har implementerat service workers genom wrappern UpUp och den fanns redan implementerad i byggprocessen i den koden jag återanvände och det enda som satte stopp var att jag inte hittade ett väder API i tid som fungerade över HTTPS och som tillåter CORS. Dessutom visade sig att AppCache inte bör användas [4].
+
+Om jag ska försöka vara lite positiv så var jag väldigt nöjd med hur smidigt det var att använda flera olika AJAX-anrop genom att använda kombination React, Redux samt Promises. I Redux' actions så anropas API:erna genom en service-klass som retunerar ett promise per API och som i sin tur antingen gör ett AJAX-anrop eller hämtar data från localstorage. När den är klar och actions får tillbaka en resolve så görs en dispatch till Redux' reducers med datan och staten uppdateras. I React-komponenterna kontrolleras sen så att all datan är komplett innan den renderas. Att kunna använda sig av fyra datakällor (Google Places API, Geoname API, SMHI API och HTML5 Localstorage) utan en enda callback känns som en dröm som blivit sann jämfört med det callback hell man kunde hamna i enbart med ett enda AJAX-anrop i ES5 och utan React och ett enkelriktat dataflöde! Dessutom var det mitt första försök med Promises så nu i efterhand är jag väldigt glad att jag tog chansen att lära mig använda Promises istället för att välja den enkla vägen med callbacks! I förra labben där jag också implementerade AJAX-anrop i en React applikation var det mer ett fulhack än något annat och dessutom använde jag inte Redux så det var intressant att skriva en ny liknande applikation fast med annan teknik. Den förra var så liten att det fungerade utan Redux men i den här applikationen var Redux till stor hjälp.
+
 ## Betygshöjande delar
+
+Det är svårt att vara positiv kring ett projekt som man själv ser som ett misslyckande men applikationen uppfyller de punkter som nämns under "Eventuellt betygshöjande funktioner"; flera relavanta API:er används, applikationens design är responsiv och den inkluderar HTML5-relaterade API:et localstorage. Koden må vara lite stökig just nu då jag inte hunnit rensa upp ordentligt efter alla försök med API:er men å andra sidan finns en mycket bra byggprocess där olika moduler kan inkluderas beroende på om utvecklaren just utvecklar eller bygger för produktion samt så finns kod för att lätt lägga till nya moduler med nya actions och nya reducers vilket gör applikationen lätt att bygga på med nya funktioner. Koden är inte välkommenterad utan istället försöker jag skriva självkommenterande kod med beskrivande namn på variabler och funktioner.
+
+## Inspelad presentation
 
 ## Referenser
 
@@ -63,3 +81,5 @@ Något som är värt att nämna kring säkerhet och React som är viktigt när d
 [2] Facebook, _Advanced Performance_. 2016. Available: https://facebook.github.io/react/docs/advanced-performance.html. Accessed 15 Jan 2016
 
 [3] Facebook, "Adding Markdown," in _Tutorial_, 2016. Available: http://facebook.github.io/react/docs/tutorial.html#adding-markdown. Accessed 15 Jan 2016
+
+[4] Mozilla Developer Network, _Using the application cache_. 2015. Available: https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache. Accessed 15 Jan 2016
