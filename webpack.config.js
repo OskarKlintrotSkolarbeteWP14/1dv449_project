@@ -63,7 +63,7 @@ var config = {
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        exclude: [nodeModulesPath, upupPath, redirectToHTTPPath, offlinePath],
+        exclude: [nodeModulesPath, upupPath, redirectToHTTPPath],
         loaders: [
             'react-hot',
             'babel?' + JSON.stringify({
@@ -77,16 +77,7 @@ var config = {
         loader: "file?name=[name].[ext]",
       },
       {
-        test: /(offline.*|redirectToHTTP).js$/,
-        loader: "file?name=scripts/[name].[ext]",
-      },
-      {
-        test: /upup.*.js$/,
-        exclude: [upupStartPath],
-        loader: "file?name=[name].[ext]",
-      },
-      {
-        test: /\upup.start.js$/,
+        test: /(redirectToHTTP).js$/,
         loader: "file?name=scripts/[name].[ext]",
       },
     ],

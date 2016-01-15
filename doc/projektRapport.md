@@ -14,7 +14,7 @@ För att förstå hur flödet ser ut i en Redux applikation kan man titta på f�
 
 ![Redux Workflow](pics/ReduxWorkflow.png)
 
-Flödet är alltså enkelriktat och i applikationen används ett bibliotek för att knyta ihop React (som är motsvarande "View Provider" i bilden) med Redux. Detta biblioteket gör det dels möjligt för React-komponenterna att använda sig av Redux' actions samt Redux' store's state. När staten ändras i Redux' store uppdateras just de värdena i de React-komponenterna som prenumererar på de värdena i staten. När de ändras uppdateras React's virtural DOM som i sin tur ser till att enbart det som faktiskt har ändrats i browserns DOM uppdateras.
+Flödet är alltså enkelriktat och i applikationen används ett bibliotek för att knyta ihop React (som är motsvarande "View Provider" i bilden) med Redux. Detta biblioteket gör det dels möjligt för React-komponenterna att använda sig av Redux' actions samt Redux' store's state. När staten ändras i Redux' store uppdateras just de värdena i de React-komponenterna som prenumererar på de värdena i staten. När de ändras uppdateras React's virtual DOM som i sin tur ser till att enbart det som faktiskt har ändrats i browserns DOM uppdateras.
 
 Nedan följer ett UML sekvensdiagram över hur det ser ut när en användare gör en lyckad förfrågan över hur vädret ser ut på en ort:
 
@@ -24,7 +24,29 @@ Det som kan vara värt att notera är att Geoname API enbart används, som det s
 
 ## Säkerhet och prestanda
 
+### CSS först, JS sist
 
+### Minifierade filer
+
+Alla CSS filer borde vara minifierade till en [1], vilket tyvärr inte är fallet. Detta på grund av tidsbrist till att lära mig hur det fungerar att minifiera med hjälp av webpack, som jag använder för att bygga sidan. Dock används den minifierade versionen av Bootstrap. När det gäller Javascript-filerna är allt minifierat till en enda boundle för att minska HTTP-anropen och minska storleken på filerna [1].
+
+### Caching
+
+#### Localstorage
+
+När en användare söker efter vädret i applikation cachas responsen i browserns localstorage. Detta göra att nästa gång användaren söker efter vädret på en ort som den redan har sökt för hämtas datan istället från localstorage, vilket går snabbare samt reducerar antalet requests till SMHI:s API [1].
+
+#### Cloudeflare
+
+Besöker man sidan genom http://weather.oskarklintrot.se/ hämtas en cachad version från Cloudeflare från någon av deras 74 datacenter stora CDN, vilket även det gör att sidan kan laddas snabbare [1].
+
+### Virtual DOM
+
+React använder sig av deras så kallade Virtual DOM. Det fungerar genom att alla ändringar som görs i applikationen skrivs till deras virtuella DOM istället för browserns DOM. Sedan jämförs innehållet i den virtuella DOM:en med browserns DOM och enbart det som skiljer uppdateras. Detta går snabbare än att hela tiden uppdatera hela browserns DOM [2].
+
+### Escaping/Sanatizing
+
+Något som är värt att nämna kring säkerhet och React som är viktigt när det gäller att använda API:er är att React själv sköter escaping/sanatizing av datan från API:erna (och all annan data som ska renderas som inte är skrivet i JSX i själva komponenten) innan den skrivs ut till klienten [3]. Har alltså exempelvis SMHI:s API blivit hackat och någon försöker göra en XSS genom att lägga in script i deras API kommer den datan inte göra någon skada, förutom att det kommer att se märkligt ut när temperaturen istället består av Javascript kod.
 
 ## Offline-first
 
@@ -33,3 +55,11 @@ Det som kan vara värt att notera är att Geoname API enbart används, som det s
 ## Egna reflektioner och funderingar
 
 ## Betygshöjande delar
+
+## Referenser
+
+[1] Steve Souders, _High Performance Web Sites_. Sebastopol, CA: O'Reilly, 2007.
+
+[2] Facebook, _Advanced Performance_. 2016. Available: https://facebook.github.io/react/docs/advanced-performance.html. Accessed 15 Jan 2016
+
+[3] Facebook, "Adding Markdown," in _Tutorial_, 2016. Available: http://facebook.github.io/react/docs/tutorial.html#adding-markdown. Accessed 15 Jan 2016
