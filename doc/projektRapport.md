@@ -1,4 +1,5 @@
 # Väderapplikation, _slutprojekt i 1dv449_
+Applikationen är publicerad här; http://weather.oskarklintrot.se/
 
 ## Inledning
 
