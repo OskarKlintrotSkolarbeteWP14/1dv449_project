@@ -1,6 +1,36 @@
 # Väderapplikation, _slutprojekt i 1dv449_
+av Oskar Klintrot, oklib08
 
 Applikationen är publicerad här; http://weather.oskarklintrot.se/
+
+## Innehållsförteckning
+### [Inledning](#inledning)
+
+### [Sekvensdiagram](#sekvensdiagram)
+
+### [Säkerhet och prestanda](#säkerhet-och-prestanda)
+  - [CSS först, JS sist](#css-först-js-sist)
+  - [Minifierade filer](#minifierade-filer)
+  - [Caching](#caching)
+    - [Localstorage](#localstorage)
+    - [Cloudeflare](#cloudeflare)
+  - [Virtual DOM](#virtual-dom)
+  - [Escaping/Sanatizing](#escapingsanatizing)
+  - [Client only](#client-only)
+
+### [Offline-first](#offline-first)
+
+### [Risker](#risker)
+
+### [Egna reflektioner och funderingar](#egna-reflektioner-och-funderingar)
+
+### [Betygshöjande delar](#betygshöjande-delar)
+
+### [Inspelad presentation](#inspelad-presentation)
+
+### [Referenser](#referenser)
+
+________________
 
 ## Inledning
 
@@ -70,11 +100,15 @@ Efter allt strul med API:er och HTTPS är jag just nu mest glad att ha något at
 
 Om jag ska försöka vara lite positiv så var jag väldigt nöjd med hur smidigt det var att använda flera olika AJAX-anrop genom att använda kombination React, Redux samt Promises. I Redux' actions så anropas API:erna genom en service-klass som retunerar ett promise per API och som i sin tur antingen gör ett AJAX-anrop eller hämtar data från localstorage. När den är klar och actions får tillbaka en resolve så görs en dispatch till Redux' reducers med datan och staten uppdateras. I React-komponenterna kontrolleras sen så att all datan är komplett innan den renderas. Att kunna använda sig av fyra datakällor (Google Places API, Geoname API, SMHI API och HTML5 Localstorage) utan en enda callback känns som en dröm som blivit sann jämfört med det callback hell man kunde hamna i enbart med ett enda AJAX-anrop i ES5 och utan React och ett enkelriktat dataflöde! Dessutom var det mitt första försök med Promises så nu i efterhand är jag väldigt glad att jag tog chansen att lära mig använda Promises istället för att välja den enkla vägen med callbacks! I förra labben där jag också implementerade AJAX-anrop i en React applikation var det mer ett fulhack än något annat och dessutom använde jag inte Redux så det var intressant att skriva en ny liknande applikation fast med annan teknik. Den förra var så liten att det fungerade utan Redux men i den här applikationen var Redux till stor hjälp.
 
+En sista sak som är värd att nämnas som inte rymns någon annanstans i rapporten är att applikationen använder React-Router och uppdaterar url:en kontinuerligt efter den datan som finns. Detta gör att om använder exempelvis söker på "Kalmar" och sen bokmärker sidan eller skickar länken till någon annan kommer användaren in där han var när han kopierade länken eller bokmärkte sidan.
+
 ## Betygshöjande delar
 
 Det är svårt att vara positiv kring ett projekt som man själv ser som ett misslyckande men applikationen uppfyller de punkter som nämns under "Eventuellt betygshöjande funktioner"; flera relavanta API:er används, applikationens design är responsiv och den inkluderar HTML5-relaterade API:et localstorage. Koden må vara lite stökig just nu då jag inte hunnit rensa upp ordentligt efter alla försök med API:er men å andra sidan finns en mycket bra byggprocess där olika moduler kan inkluderas beroende på om utvecklaren just utvecklar eller bygger för produktion samt så finns kod för att lätt lägga till nya moduler med nya actions och nya reducers vilket gör applikationen lätt att bygga på med nya funktioner. Koden är inte välkommenterad utan istället försöker jag skriva självkommenterande kod med beskrivande namn på variabler och funktioner.
 
 ## Inspelad presentation
+
+<iframe width="420" height="315" src="https://www.youtube.com/embed/9tRsUmutjQU" frameborder="0" allowfullscreen></iframe>
 
 ## Referenser
 

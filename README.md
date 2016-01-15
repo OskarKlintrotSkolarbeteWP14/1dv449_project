@@ -3,6 +3,6 @@ Eftersom mycket av kraven är snarlika kraven på projektet i 1DV409 kommer jag 
 
 **Uppdatering:** Jag valde att inte göra ett API för att kunna köra applikationen utanför skolans VPN och för att kunna använda https och därmed Service Workers. Dock visade det sig att de API:erna jag ville använda varken tillät https eller CORS. Som tur är så är det ju roligare att skriva om kod och byta ut API:er än att implementera funktionalitet...
 
-# Rapport och url
+# Rapport, presentation och url
 
-Rapporten finns [här](doc/projektRapport.md) och applikationen är publicerad [här](http://weather.oskarklintrot.se/).
+Rapporten finns [här](doc/projektRapport.md), presentationen [här](doc/projektRapport.md#inspelad-presentation) och applikationen är publicerad [här](http://weather.oskarklintrot.se/).
