@@ -4,11 +4,11 @@ av Oskar Klintrot, oklib08
 Applikationen är publicerad här; http://weather.oskarklintrot.se/
 
 ## Innehållsförteckning
-### [Inledning](#inledning)
+### [Inledning](#inledning-1)
 
-### [Sekvensdiagram](#sekvensdiagram)
+### [Sekvensdiagram](#sekvensdiagram-1)
 
-### [Säkerhet och prestanda](#säkerhet-och-prestanda)
+### [Säkerhet och prestanda](#säkerhet-och-prestanda-1)
   - [CSS först, JS sist](#css-först-js-sist)
   - [Minifierade filer](#minifierade-filer)
   - [Caching](#caching)
@@ -18,17 +18,17 @@ Applikationen är publicerad här; http://weather.oskarklintrot.se/
   - [Escaping/Sanatizing](#escapingsanatizing)
   - [Client only](#client-only)
 
-### [Offline-first](#offline-first)
+### [Offline-first](#offline-first-1)
 
-### [Risker](#risker)
+### [Risker](#risker-1)
 
-### [Egna reflektioner och funderingar](#egna-reflektioner-och-funderingar)
+### [Egna reflektioner och funderingar](#egna-reflektioner-och-funderingar-1)
 
-### [Betygshöjande delar](#betygshöjande-delar)
+### [Betygshöjande delar](#betygshöjande-delar-1)
 
-### [Inspelad presentation](#inspelad-presentation)
+### [Inspelad presentation](#inspelad-presentation-1)
 
-### [Referenser](#referenser)
+### [Referenser](#referenser-1)
 
 ________________
 
@@ -108,7 +108,7 @@ Det är svårt att vara positiv kring ett projekt som man själv ser som ett mis
 
 ## Inspelad presentation
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/9tRsUmutjQU" frameborder="0" allowfullscreen></iframe>
+Den inspelade presentationen finns upplagd på [YouTube](https://youtu.be/9tRsUmutjQU).
 
 ## Referenser
 

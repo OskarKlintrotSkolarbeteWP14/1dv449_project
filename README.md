@@ -5,4 +5,4 @@ Eftersom mycket av kraven är snarlika kraven på projektet i 1DV409 kommer jag 
 
 # Rapport, presentation och url
 
-Rapporten finns [här](doc/projektRapport.md), presentationen [här](doc/projektRapport.md#inspelad-presentation) och applikationen är publicerad [här](http://weather.oskarklintrot.se/).
+Rapporten finns [här](doc/projektRapport.md), presentationen [här](https://youtu.be/9tRsUmutjQU) och applikationen är publicerad [här](http://weather.oskarklintrot.se/).
